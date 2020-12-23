@@ -13,20 +13,24 @@ TYPE
   { TForm1 }
 
   TForm1 = CLASS(TForm)
-    Button1: TButton;
+    Pref_ok_but: TButton;
+    Pref_cancel_button: TButton;
     CalculatorDialog1: TCalculatorDialog;
-    CheckBox1: TCheckBox;
-    CheckBox2: TCheckBox;
-    CheckBox3: TCheckBox;
     FindDialog1: TFindDialog;
+    Preferences_Box: TGroupBox;
     Memo1: TMemo;
     Build: TMenuItem;
     MenuItem11: TMenuItem;
+    no_optimizations: TRadioButton;
+    Level1_optimizations: TRadioButton;
+    Level2_optimizations: TRadioButton;
+    Level3_optimizations: TRadioButton;
+    Level4_optimizations: TRadioButton;
+    RadioGroup1: TRadioGroup;
     Target: TMenuItem;
     Compile: TMenuItem;
     Make: TMenuItem;
     Compile_popup: TPopupMenu;
-    Preferences_Box: TGroupBox;
     Close_file: TMenuItem;
     Calculator_button: TMenuItem;
     MenuItem1: TMenuItem;
@@ -71,18 +75,18 @@ TYPE
     Window_button: TToolButton;
     PROCEDURE Button1Click(Sender: TObject);
     PROCEDURE Calculator_buttonClick(Sender: TObject);
-    PROCEDURE CheckBox1Change(Sender: TObject);
     PROCEDURE FormCreate(Sender: TObject);
     PROCEDURE FormResize(Sender: TObject);
     PROCEDURE Close_fileClick(Sender: TObject);
     PROCEDURE PreferencesClick(Sender: TObject);
     PROCEDURE CompileClick(Sender: TObject);
     PROCEDURE open_fileClick(Sender: TObject);
+    procedure Pref_cancel_buttonClick(Sender: TObject);
+    procedure Pref_ok_butClick(Sender: TObject);
     procedure Run_buttonClick(Sender: TObject);
     PROCEDURE saveas_fileClick(Sender: TObject);
     PROCEDURE Save_fileClick(Sender: TObject);
-    procedure SearchClick(Sender: TObject);
-    procedure FindDialog1Find(Sender: TObject);
+
 
 
 
@@ -90,8 +94,8 @@ TYPE
   private
     filename: string;
     filechanged : int64;
-      fPos:integer;
-  found:boolean;
+    Optimization : String;
+
   public
 
   END;
@@ -116,6 +120,7 @@ BEGIN
   Preferences_Box.Visible := False;
   memo1.width := form1.width;
   synedit1.Height:=form1.Height-(toolbar1.Height+toolbar2.Height)-memo1.Height;
+  optimization := '-O-';
 END;
 
 
@@ -131,11 +136,6 @@ BEGIN
   Preferences_Box.Visible := False;
 END;
 
-PROCEDURE TForm1.CheckBox1Change(Sender: TObject);
-BEGIN
-  // toggle syntax highlighting
-  synFreePascalSyn1.Enabled := checkbox1.Checked;
-END;
 
 PROCEDURE TForm1.FormResize(Sender: TObject);
 BEGIN
@@ -161,7 +161,15 @@ END;
 
 
 PROCEDURE TForm1.PreferencesClick(Sender: TObject);
+
 BEGIN
+  Case Optimization of
+       '-O-' : no_optimizations.checked := true;
+       '-O1' : level1_optimizations.checked := true;
+       '-O2' : level2_optimizations.checked := true;
+       '-O3' : level3_optimizations.checked := true;
+       '-O4' : level4_optimizations.checked := true;
+  end;
   Preferences_Box.Visible := True;
 END;
 
@@ -189,7 +197,7 @@ BEGIN
     AProcess := TProcess.Create(nil);
     memo1.Clear;
     AProcess.Executable := 'fpc';
-    AProcess.Parameters.Add('-O1');
+    AProcess.Parameters.Add(optimization);  //optimization level
     AProcess.Parameters.Add(filename);
     AProcess.Options := [poUsePipes,poNoConsole];
     AProcess.Execute;
@@ -221,6 +229,21 @@ BEGIN
   form1.Caption := 'Free Pascal IDE' + ' ('+filename+')';
   filechanged := synedit1.ChangeStamp;
 END;
+
+procedure TForm1.Pref_cancel_buttonClick(Sender: TObject); //ignore changes to preferences
+begin
+    Preferences_Box.Visible := False;
+end;
+
+procedure TForm1.Pref_ok_butClick(Sender: TObject);   //add all preferences in here
+begin
+     if no_optimizations.checked then optimization := '-O-';
+     if level1_optimizations.checked then optimization := '-O1';
+     if level2_optimizations.checked then optimization := '-O2';
+     if level3_optimizations.checked then optimization := '-O3';
+     if level4_optimizations.checked then optimization := '-O4';
+    Preferences_Box.Visible := False;
+end;
 
 procedure TForm1.Run_buttonClick(Sender: TObject);
 var
