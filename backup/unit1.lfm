@@ -655,51 +655,6 @@ object Form1: TForm1
       Caption = 'ALT F10 local menu'
     end
   end
-  object Preferences_Box: TGroupBox
-    Left = 200
-    Height = 331
-    Top = 248
-    Width = 559
-    Align = alCustom
-    Caption = 'Preferences'
-    ClientHeight = 306
-    ClientWidth = 555
-    TabOrder = 3
-    object CheckBox1: TCheckBox
-      Left = 8
-      Height = 24
-      Top = 8
-      Width = 133
-      Caption = 'Syntax Highlight'
-      OnChange = CheckBox1Change
-      TabOrder = 0
-    end
-    object CheckBox2: TCheckBox
-      Left = 8
-      Height = 24
-      Top = 32
-      Width = 104
-      Caption = 'Auto-Indent'
-      TabOrder = 1
-    end
-    object CheckBox3: TCheckBox
-      Left = 8
-      Height = 24
-      Top = 56
-      Width = 108
-      Caption = 'Linenumbers'
-      TabOrder = 2
-    end
-    object Button1: TButton
-      Left = 8
-      Height = 31
-      Top = 264
-      Width = 94
-      Caption = 'OK'
-      OnClick = Button1Click
-      TabOrder = 3
-    end
-  end
   object Memo1: TMemo
     Left = 0
     Height = 120
@@ -710,7 +665,93 @@ object Form1: TForm1
     Font.Name = 'Courier'
     ParentFont = False
     ScrollBars = ssAutoBoth
+    TabOrder = 3
+  end
+  object Preferences_Box: TGroupBox
+    Left = 206
+    Height = 267
+    Top = 171
+    Width = 426
+    Caption = 'Preferences'
+    ClientHeight = 242
+    ClientWidth = 422
     TabOrder = 4
+    object RadioGroup1: TRadioGroup
+      Left = 192
+      Height = 131
+      Top = 0
+      Width = 231
+      AutoFill = True
+      Caption = 'Optimizations'
+      ChildSizing.LeftRightSpacing = 6
+      ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+      ChildSizing.EnlargeVertical = crsHomogenousChildResize
+      ChildSizing.ShrinkHorizontal = crsScaleChilds
+      ChildSizing.ShrinkVertical = crsScaleChilds
+      ChildSizing.Layout = cclLeftToRightThenTopToBottom
+      ChildSizing.ControlsPerLine = 1
+      ClientHeight = 106
+      ClientWidth = 227
+      TabOrder = 0
+      object no_optimizations: TRadioButton
+        Left = 6
+        Height = 21
+        Top = 0
+        Width = 215
+        Caption = 'Disable optimizations'
+        TabOrder = 0
+      end
+      object Level1_optimizations: TRadioButton
+        Left = 6
+        Height = 21
+        Top = 21
+        Width = 215
+        Caption = 'Level 1 optimizations'
+        TabOrder = 4
+      end
+      object Level2_optimizations: TRadioButton
+        Left = 6
+        Height = 21
+        Top = 42
+        Width = 215
+        Caption = 'Level 2 optimizations'
+        TabOrder = 1
+      end
+      object Level3_optimizations: TRadioButton
+        Left = 6
+        Height = 21
+        Top = 63
+        Width = 215
+        Caption = 'Level 3 optimizations'
+        TabOrder = 2
+      end
+      object Level4_optimizations: TRadioButton
+        Left = 6
+        Height = 22
+        Top = 84
+        Width = 215
+        Caption = 'Level 4 optimizations'
+        TabOrder = 3
+      end
+    end
+    object Pref_ok_but: TButton
+      Left = 39
+      Height = 31
+      Top = 191
+      Width = 94
+      Caption = 'OK'
+      OnClick = Pref_ok_butClick
+      TabOrder = 1
+    end
+    object Pref_cancel_button: TButton
+      Left = 264
+      Height = 31
+      Top = 191
+      Width = 94
+      Caption = 'Cancel'
+      OnClick = Pref_cancel_buttonClick
+      TabOrder = 2
+    end
   end
   object SynFreePascalSyn1: TSynFreePascalSyn
     CommentAttri.Foreground = clGreen
@@ -737,7 +778,6 @@ object Form1: TForm1
     Top = 32
     object Search: TMenuItem
       Caption = 'Find'
-      OnClick = SearchClick
     end
     object Replace: TMenuItem
       Caption = 'Replace'
