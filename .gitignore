@@ -1,0 +1,15 @@
+
+*.exe
+*.o
+*.obj
+*.o
+*.ppu
+*.o
+*.obj
+lib/x86_64-win64/unit1.lfm
+*.exe
+lib/x86_64-win64/fpide.o
+lib/x86_64-win64/fpide.obj
+lib/x86_64-win64/unit1.lfm
+lib/x86_64-win64/unit1.o
+lib/x86_64-win64/unit1.ppu
