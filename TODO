@@ -1,5 +1,6 @@
 FP-IDE TODO
-1. add find and replace capability
-2. Setup preferences for editor (highlighting/fonts etc.)
-3. add compiler options
-4. implement function keys for bottom toolbar
+1. Create config file which keeps settings
+2. add find and replace capability
+3. Setup preferences for editor (highlighting/fonts etc.)
+4. done / add compiler options
+5. implement function keys for bottom toolbar
