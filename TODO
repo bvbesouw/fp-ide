@@ -1,5 +1,5 @@
 FP-IDE TODO
-1. Create config file which keeps settings
+1. done Create config file which keeps settings
 2. add find and replace capability
 3. Setup preferences for editor (highlighting/fonts etc.)
 4. done / add compiler options
