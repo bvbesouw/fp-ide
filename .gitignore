@@ -13,3 +13,6 @@ lib/x86_64-win64/fpide.obj
 lib/x86_64-win64/unit1.lfm
 lib/x86_64-win64/unit1.o
 lib/x86_64-win64/unit1.ppu
+lib/x86_64-win64/fpide.obj
+*.obj
+*.lps
