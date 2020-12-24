@@ -752,8 +752,17 @@ object Form1: TForm1
       OnClick = Pref_cancel_buttonClick
       TabOrder = 2
     end
+    object Open_last_file: TCheckBox
+      Left = 15
+      Height = 24
+      Top = 13
+      Width = 117
+      Caption = 'Open Last File'
+      TabOrder = 3
+    end
   end
   object SynFreePascalSyn1: TSynFreePascalSyn
+    Enabled = False
     CommentAttri.Foreground = clGreen
     IdentifierAttri.Foreground = clYellow
     NumberAttri.Foreground = 14125412
@@ -805,6 +814,17 @@ object Form1: TForm1
     object Close_file: TMenuItem
       Caption = 'Close'
       OnClick = Close_fileClick
+    end
+    object MenuItem7: TMenuItem
+      Caption = '-'
+    end
+    object exit_file: TMenuItem
+      Caption = 'Exit (with Save)'
+      OnClick = exit_fileClick
+    end
+    object File_Quit: TMenuItem
+      Caption = 'Quit (no Save)'
+      OnClick = File_QuitClick
     end
   end
   object SaveDialog1: TSaveDialog
