@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <Compiler Value="C:\lazarus\fpc\3.2.0\bin\x86_64-win64\fpc.exe" Date="1357350767"/>
-  <Params Value=" -MObjFPC -Scghi -O1 -g -gl -WG -l -vewnhibq -FiC:\Users\bvbes\Documents\pascal\fpide\lib\x86_64-win64 -FuC:\lazarus\components\synedit\units\x86_64-win64\win32 -FuC:\lazarus\lcl\units\x86_64-win64\win32 -FuC:\lazarus\lcl\units\x86_64-win64 -FuC:\lazarus\components\lazutils\lib\x86_64-win64 -FuC:\lazarus\packager\units\x86_64-win64 -FuC:\Users\bvbes\Documents\pascal\fpide\ -FUC:\Users\bvbes\Documents\pascal\fpide\lib\x86_64-win64\ -FEC:\Users\bvbes\Documents\pascal\fpide\ -oC:\Users\bvbes\Documents\pascal\fpide\fpide.exe -dLCL -dLCLwin32 fpide.lpr"/>
+  <Params Value=" -MObjFPC -Scghi -O1 -g -gl -WG -l -vewnhibq -FiC:\Users\bvbes\Documents\pascal\fpide\lib\x86_64-win64 -FuC:\lazarus\components\synedit\units\x86_64-win64\win32 -FuC:\lazarus\components\lazcontrols\lib\x86_64-win64\win32 -FuC:\lazarus\lcl\units\x86_64-win64\win32 -FuC:\lazarus\lcl\units\x86_64-win64 -FuC:\lazarus\components\lazutils\lib\x86_64-win64 -FuC:\lazarus\packager\units\x86_64-win64 -FuC:\Users\bvbes\Documents\pascal\fpide\ -FUC:\Users\bvbes\Documents\pascal\fpide\lib\x86_64-win64\ -FEC:\Users\bvbes\Documents\pascal\fpide\ -oC:\Users\bvbes\Documents\pascal\fpide\fpide.exe -dLCL -dLCLwin32 fpide.lpr"/>
 </CONFIG>

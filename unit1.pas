@@ -5,15 +5,16 @@ UNIT Unit1;
 INTERFACE
 
 USES
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Menus, ComCtrls, strutils,
-  StdCtrls, ExtDlgs, ExtCtrls, SynEdit, SynHighlighterPas, process, LazFileUtils;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Menus, ComCtrls,
+  strutils, StdCtrls, ExtDlgs, ExtCtrls, SynEdit, SynHighlighterPas, process,
+  LazFileUtils;
 
 TYPE
   TConfig_rec = RECORD     //used for configuration file
     version,
     last_file,
     optimization,
-    font,
+    font_name,
     String_Spare1,
     String_Spare2,
     String_Spare3,
@@ -23,7 +24,7 @@ TYPE
     String_Spare7,
     String_Spare8,
     String_Spare9,
-    String_Spare10: string[255];
+    String_Spare10: STRING[255];
     openlastfile,
     Boolean_Spare1,
     Boolean_Spare2,
@@ -34,7 +35,7 @@ TYPE
     Boolean_Spare7,
     Boolean_Spare8,
     Boolean_Spare9,
-    Boolean_Spare10: boolean;
+    Boolean_Spare10: BOOLEAN;
     Font_size,
     Integer_Spare1,
     Integer_Spare2,
@@ -45,15 +46,22 @@ TYPE
     Integer_Spare7,
     Integer_Spare8,
     Integer_Spare9,
-    Integer_Spare10: integer;
+    Integer_Spare10: INTEGER;
+    //font:TFont;
   END;
   { TForm1 }
 
   TForm1 = CLASS(TForm)
+    OK_Editor: TButton;
+    Button2: TButton;
+    Button3: TButton;
+    Select_font: TButton;
+    FontDialog1: TFontDialog;
     MenuItem7: TMenuItem;
     exit_file: TMenuItem;
     File_Quit: TMenuItem;
     Open_last_file: TCheckBox;
+    Panel1: TPanel;
     Pref_ok_but: TButton;
     Pref_cancel_button: TButton;
     CalculatorDialog1: TCalculatorDialog;
@@ -68,6 +76,8 @@ TYPE
     Level3_optimizations: TRadioButton;
     Level4_optimizations: TRadioButton;
     RadioGroup1: TRadioGroup;
+    SynEdit2: TSynEdit;
+    SynFreePascalSyn2: TSynFreePascalSyn;
     Target: TMenuItem;
     Compile: TMenuItem;
     Make: TMenuItem;
@@ -115,12 +125,15 @@ TYPE
     Options_Button: TToolButton;
     Window_button: TToolButton;
     PROCEDURE Button1Click(Sender: TObject);
+    PROCEDURE Button2Click(Sender: TObject);
+    PROCEDURE Button3Click(Sender: TObject);
     PROCEDURE Calculator_buttonClick(Sender: TObject);
     PROCEDURE exit_fileClick(Sender: TObject);
     PROCEDURE File_QuitClick(Sender: TObject);
     PROCEDURE FormCreate(Sender: TObject);
     PROCEDURE FormResize(Sender: TObject);
     PROCEDURE Close_fileClick(Sender: TObject);
+    PROCEDURE OK_EditorClick(Sender: TObject);
     PROCEDURE PreferencesClick(Sender: TObject);
     PROCEDURE CompileClick(Sender: TObject);
     PROCEDURE open_fileClick(Sender: TObject);
@@ -129,15 +142,16 @@ TYPE
     PROCEDURE Run_buttonClick(Sender: TObject);
     PROCEDURE saveas_fileClick(Sender: TObject);
     PROCEDURE Save_fileClick(Sender: TObject);
+    PROCEDURE Select_fontClick(Sender: TObject);
     PROCEDURE update_config_file;
     PROCEDURE read_config_file;
 
-  private
-    filename: string;
-    filechanged: int64;
+  PRIVATE
+    filename: STRING;
+    filechanged: INT64;
     Config_rec: TConfig_rec;
     ConfigFile: FILE OF TConfig_rec;
-  public
+  PUBLIC
 
   END;
 
@@ -178,6 +192,8 @@ BEGIN
         form1.Caption := 'Free Pascal IDE' + ' (' + filename + ')';
         filechanged := synedit1.ChangeStamp;
       END;
+    synedit1.Font.Name := Config_rec.Font_name;
+    synedit1.Font.Size := Config_rec.Font_size;
   END;
 END;
 
@@ -226,6 +242,21 @@ BEGIN
   Preferences_Box.Visible := False;
 END;
 
+PROCEDURE TForm1.Button2Click(Sender: TObject);
+BEGIN
+  panel1.Visible := False;
+END;
+
+PROCEDURE TForm1.Button3Click(Sender: TObject);
+BEGIN
+  synedit2.Color := synedit1.Color;
+  synedit2.Font := synedit1.Font;
+  synedit2.gutter := synedit1.gutter;
+  synedit2.Lines := synedit1.Lines;
+  panel1.Visible := True;
+  synedit2.Lines := synedit1.Lines;
+END;
+
 
 PROCEDURE TForm1.FormResize(Sender: TObject);
 BEGIN
@@ -246,6 +277,15 @@ BEGIN
   END
   ELSE
     ShowMessage('file was changed but not saved');
+END;
+
+PROCEDURE TForm1.OK_EditorClick(Sender: TObject);
+BEGIN
+  synedit1.font := synedit2.font;
+  Config_rec.font_name := synedit1.Font.Name;
+  Config_rec.font_size := synedit1.Font.Size;
+  update_config_file;
+  panel1.Visible := False;
 END;
 
 
@@ -269,9 +309,9 @@ CONST
 VAR
   AProcess:   TProcess;
   OutputStream: TStream;
-  BytesRead, leng: longint;
-  Buffer:     ARRAY[1..BUF_SIZE] OF byte;
-  executable: string;
+  BytesRead, leng: LONGINT;
+  Buffer:     ARRAY[1..BUF_SIZE] OF BYTE;
+  executable: STRING;
 
 BEGIN
   leng := length(filename);
@@ -349,8 +389,8 @@ END;
 PROCEDURE TForm1.Run_buttonClick(Sender: TObject);
 VAR
   Process:    TProcess;
-  I, leng:    integer;
-  executable: string;
+  I, leng:    INTEGER;
+  executable: STRING;
 BEGIN
   leng := length(filename);
   executable := LeftStr(filename, leng - 3) + 'exe';
@@ -400,6 +440,14 @@ BEGIN
   ELSE
     ShowMessage('File has no name, please use "save as"');
   update_config_file;
+END;
+
+
+PROCEDURE TForm1.Select_fontClick(Sender: TObject);
+BEGIN
+  fontDialog1.font := synedit2.font;
+  IF fontDialog1.Execute THEN
+    synedit2.font := fontDialog1.font;
 END;
 
 
