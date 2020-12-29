@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 645
+  Left = 528
   Height = 775
-  Top = 173
+  Top = 155
   Width = 1184
   Caption = 'Free Pascal IDE'
   ClientHeight = 775
@@ -487,7 +487,7 @@ object Form1: TForm1
       object SynGutterLineNumber1: TSynGutterLineNumber
         Width = 27
         MouseActions = <>
-        MarkupInfo.Background = 3158064
+        MarkupInfo.Background = clBlue
         MarkupInfo.Foreground = clNone
         DigitCount = 2
         ShowOnlyLineNumbersMultiplesOf = 1
@@ -573,7 +573,6 @@ object Form1: TForm1
       Top = 2
       AllowAllUp = True
       Caption = 'Debug'
-      Enabled = False
     end
     object Tools_button: TToolButton
       Left = 337
@@ -587,21 +586,18 @@ object Form1: TForm1
       Top = 2
       AllowAllUp = True
       Caption = 'Options'
-      Enabled = False
     end
     object Window_button: TToolButton
       Left = 461
       Top = 2
       AllowAllUp = True
       Caption = 'Window'
-      Enabled = False
     end
     object Help_button: TToolButton
       Left = 523
       Top = 2
       AllowAllUp = True
       Caption = 'Help'
-      Enabled = False
     end
   end
   object ToolBar2: TToolBar
@@ -627,43 +623,36 @@ object Form1: TForm1
       Top = 2
       AllowAllUp = True
       Caption = 'F1 help'
-      Enabled = False
     end
     object ToolButton12: TToolButton
       Left = 72
       Top = 2
       AllowAllUp = True
       Caption = 'F2 save'
-      Enabled = False
-      OnClick = ToolButton12Click
     end
     object ToolButton13: TToolButton
       Left = 143
       Top = 2
       AllowAllUp = True
       Caption = 'F3 open'
-      Enabled = False
     end
     object ToolButton14: TToolButton
       Left = 214
       Top = 2
       AllowAllUp = True
       Caption = 'ALT F9 Compile'
-      Enabled = False
     end
     object ToolButton15: TToolButton
       Left = 348
       Top = 2
       AllowAllUp = True
       Caption = 'F9 Make'
-      Enabled = False
     end
     object ToolButton16: TToolButton
       Left = 419
       Top = 2
       AllowAllUp = True
       Caption = 'ALT F10 local menu'
-      Enabled = False
     end
   end
   object Memo1: TMemo
@@ -1416,26 +1405,21 @@ object Form1: TForm1
     Top = 288
     object MenuItem1: TMenuItem
       Caption = 'Undo      Ctrl+Z'
-      Enabled = False
     end
     object MenuItem2: TMenuItem
       Caption = '-'
     end
     object Cut: TMenuItem
       Caption = 'Cut          Ctrl+X'
-      Enabled = False
     end
     object MenuItem4: TMenuItem
       Caption = 'Copy       Ctrl+C'
-      Enabled = False
     end
     object MenuItem5: TMenuItem
       Caption = 'Paste       Ctrl+V'
-      Enabled = False
     end
     object MenuItem6: TMenuItem
       Caption = 'Delete     Del'
-      Enabled = False
     end
     object MenuItem3: TMenuItem
       Caption = '-'
@@ -1454,11 +1438,9 @@ object Form1: TForm1
     end
     object Make: TMenuItem
       Caption = 'Make'
-      Enabled = False
     end
     object Build: TMenuItem
       Caption = 'Build'
-      OnClick = BuildClick
     end
     object MenuItem11: TMenuItem
       Caption = '-'

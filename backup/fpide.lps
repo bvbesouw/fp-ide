@@ -9,8 +9,8 @@
         <Filename Value="fpide.lpr"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <CursorPos Y="21"/>
-        <UsageCount Value="178"/>
+        <CursorPos X="41" Y="19"/>
+        <UsageCount Value="176"/>
       </Unit0>
       <Unit1>
         <Filename Value="unit1.pas"/>
@@ -20,11 +20,10 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Unit1"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="367"/>
-        <CursorPos X="6" Y="379"/>
-        <UsageCount Value="178"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="7"/>
+        <CursorPos X="29" Y="30"/>
+        <UsageCount Value="176"/>
       </Unit1>
       <Unit2>
         <Filename Value="unit2.pas"/>
@@ -34,7 +33,7 @@
         <UnitName Value="Unit2"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="28" Y="11"/>
-        <UsageCount Value="173"/>
+        <UsageCount Value="171"/>
       </Unit2>
       <Unit3>
         <Filename Value="C:\lazarus\components\synedit\synhighlighterpas.pp"/>
@@ -74,68 +73,10 @@
         <UsageCount Value="10"/>
       </Unit7>
     </Units>
-    <JumpHistory Count="15" HistoryIndex="14">
-      <Position1>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="30" Column="29" TopLine="22"/>
-      </Position1>
-      <Position2>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="287" Column="5" TopLine="279"/>
-      </Position2>
-      <Position3>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="255" Column="68" TopLine="243"/>
-      </Position3>
-      <Position4>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="253" Column="43" TopLine="245"/>
-      </Position4>
-      <Position5>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="263" TopLine="246"/>
-      </Position5>
-      <Position6>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="257" Column="21" TopLine="243"/>
-      </Position6>
-      <Position7>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="153" Column="7" TopLine="152"/>
-      </Position7>
-      <Position8>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="346" Column="47" TopLine="335"/>
-      </Position8>
-      <Position9>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="339" Column="25" TopLine="336"/>
-      </Position9>
-      <Position10>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="477" Column="24" TopLine="454"/>
-      </Position10>
-      <Position11>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="305" Column="18" TopLine="289"/>
-      </Position11>
-      <Position12>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="129" Column="15" TopLine="124"/>
-      </Position12>
-      <Position13>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="255" Column="3" TopLine="244"/>
-      </Position13>
-      <Position14>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="256" Column="5" TopLine="244"/>
-      </Position14>
-      <Position15>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="379" Column="11" TopLine="361"/>
-      </Position15>
-    </JumpHistory>
+    <General>
+      <ActiveWindowIndexAtStart Value="-1"/>
+    </General>
+    <JumpHistory HistoryIndex="-1"/>
     <RunParams>
       <FormatVersion Value="2"/>
       <Modes Count="0" ActiveMode=""/>

@@ -52,9 +52,12 @@ TYPE
   { TForm1 }
 
   TForm1 = CLASS(TForm)
+    Run: TMenuItem;
+    show_output: TMenuItem;
     OK_Editor: TButton;
     Button2: TButton;
     Button3: TButton;
+    PopupMenu1: TPopupMenu;
     Select_font: TButton;
     FontDialog1: TFontDialog;
     MenuItem7: TMenuItem;
@@ -124,7 +127,9 @@ TYPE
     Tools_button: TToolButton;
     Options_Button: TToolButton;
     Window_button: TToolButton;
-    PROCEDURE Button1Click(Sender: TObject);
+    PROCEDURE BuildClick(Sender: TObject);
+
+    PROCEDURE compile_build(mode: INTEGER);
     PROCEDURE Button2Click(Sender: TObject);
     PROCEDURE Button3Click(Sender: TObject);
     PROCEDURE Calculator_buttonClick(Sender: TObject);
@@ -133,16 +138,20 @@ TYPE
     PROCEDURE FormCreate(Sender: TObject);
     PROCEDURE FormResize(Sender: TObject);
     PROCEDURE Close_fileClick(Sender: TObject);
+    procedure RunClick(Sender: TObject);
     PROCEDURE OK_EditorClick(Sender: TObject);
     PROCEDURE PreferencesClick(Sender: TObject);
     PROCEDURE CompileClick(Sender: TObject);
     PROCEDURE open_fileClick(Sender: TObject);
     PROCEDURE Pref_cancel_buttonClick(Sender: TObject);
     PROCEDURE Pref_ok_butClick(Sender: TObject);
-    PROCEDURE Run_buttonClick(Sender: TObject);
+
     PROCEDURE saveas_fileClick(Sender: TObject);
     PROCEDURE Save_fileClick(Sender: TObject);
+    procedure SearchClick(Sender: TObject);
     PROCEDURE Select_fontClick(Sender: TObject);
+
+    PROCEDURE ToolButton12Click(Sender: TObject);
     PROCEDURE update_config_file;
     PROCEDURE read_config_file;
 
@@ -150,7 +159,7 @@ TYPE
     filename: STRING;
     filechanged: INT64;
     Config_rec: TConfig_rec;
-    ConfigFile: FILE OF TConfig_rec;
+    //ConfigFile: FILE OF TConfig_rec;
   PUBLIC
 
   END;
@@ -237,9 +246,67 @@ END;
 
 
 
-PROCEDURE TForm1.Button1Click(Sender: TObject);
+
+
+PROCEDURE TForm1.compile_build(mode: INTEGER);
+{this procedure will build, make or compile the source file based on the argument.
+      mode = 1, compile
+      mode = 2, build
+}
+
+CONST
+  BUF_SIZE = 2048; // Buffer size for reading the output in chunks
+
+VAR
+  AProcess:   TProcess;
+  OutputStream: TStream;
+  BytesRead, leng: LONGINT;
+  Buffer:     ARRAY[1..BUF_SIZE] OF BYTE;
+  executable: STRING;
+
 BEGIN
-  Preferences_Box.Visible := False;
+  leng := length(filename);
+  executable := LeftStr(filename, leng - 3) + 'exe';
+  IF filename <> '' THEN
+  BEGIN
+    IF FileExists(executable) THEN
+      DeleteFile(executable);
+    synedit1.Lines.SaveToFile(filename);
+    filechanged := synedit1.ChangeStamp;
+    AProcess := TProcess.Create(nil);
+    memo1.Clear;
+    AProcess.Executable := 'fpc';
+    AProcess.Parameters.Add(Config_rec.optimization);  //optimization level
+    IF mode = 1 THEN
+    BEGIN
+    END; //no need to do anything
+    IF mode = 2 THEN
+      AProcess.Parameters.Add('-B'); //add -B
+    AProcess.Parameters.Add(filename);
+    AProcess.Options := [poUsePipes, poNoConsole];
+    AProcess.Execute;
+    OutputStream := TMemoryStream.Create;
+
+    REPEAT
+      BytesRead := AProcess.Output.Read(Buffer, BUF_SIZE);
+      OutputStream.Write(Buffer, BytesRead)
+    UNTIL BytesRead = 0;
+    AProcess.Free;
+    OutputStream.Position := 0;
+    memo1.Lines.LoadFromStream(outputstream);
+    OutputStream.Free;
+  END
+  ELSE
+    ShowMessage('File has no name, please use "save as first"');
+
+END;
+
+PROCEDURE TForm1.BuildClick(Sender: TObject);
+VAR
+  mode: INTEGER;
+BEGIN
+  mode := 2;
+  compile_build(mode);
 END;
 
 PROCEDURE TForm1.Button2Click(Sender: TObject);
@@ -251,8 +318,18 @@ PROCEDURE TForm1.Button3Click(Sender: TObject);
 BEGIN
   synedit2.Color := synedit1.Color;
   synedit2.Font := synedit1.Font;
-  //synedit2.gutter := synedit1.gutter;
-  synedit2.Lines := synedit1.Lines;
+
+  {we have to call out the gutter properties separately since
+  synedit2.gutter := synedit1.gutter, will rsult in a 'sigsev' and the program
+  will crash but have a process running in the background, making it ipossible
+  to restart}
+
+  synedit2.gutter.Color := synedit1.gutter.color;
+  SynEdit2.Gutter.LineNumberPart.MarkupInfo.Foreground :=
+    SynEdit1.Gutter.LineNumberPart.MarkupInfo.Foreground;
+  SynEdit2.Gutter.LineNumberPart.MarkupInfo.background :=
+    SynEdit1.Gutter.LineNumberPart.MarkupInfo.background;
+
   panel1.Visible := True;
   synedit2.Lines := synedit1.Lines;
 END;
@@ -279,6 +356,48 @@ BEGIN
     ShowMessage('file was changed but not saved');
 END;
 
+procedure TForm1.RunClick(Sender: TObject);
+const
+  BUF_SIZE = 2048;
+VAR
+  Process: TProcess;
+  I, leng: INTEGER;
+  executable: STRING;
+  //OutputStream: TStream;
+  //BytesRead: LONGINT;
+  //Buffer: ARRAY[1..BUF_SIZE] OF BYTE;
+BEGIN
+  leng := length(filename);
+  executable := LeftStr(filename, leng - 3) + 'exe';
+  IF FileExists(executable) THEN
+  BEGIN
+    Process := TProcess.Create(nil);
+    TRY
+      Process.InheritHandles := False;
+      Process.Options := [poUsePipes];
+      Process.ShowWindow := swoShow;
+      FOR I := 1 TO GetEnvironmentVariableCount DO
+        Process.Environment.Add(GetEnvironmentString(I));
+      Process.Executable := executable;
+      Process.Execute;
+      //OutputStream := TMemoryStream.Create;
+      //REPEAT
+      //  BytesRead := Process.Output.Read(Buffer, BUF_SIZE);
+      //  OutputStream.Write(Buffer, BytesRead);
+      //UNTIL BytesRead = 0;  // Stop if no more data is available
+    FINALLY
+      Process.Free;
+                 //OutputStream.Position := 0;
+    //memo2.Lines.LoadFromStream(outputstream);
+    //OutputStream.Free;
+    END;
+  END
+  ELSE
+    ShowMessage('Executable doesn''t exist. Must compile succesfully first');
+
+END;
+
+
 PROCEDURE TForm1.OK_EditorClick(Sender: TObject);
 BEGIN
   synedit1.font := synedit2.font;
@@ -303,49 +422,8 @@ BEGIN
 END;
 
 PROCEDURE TForm1.CompileClick(Sender: TObject);
-CONST
-  BUF_SIZE = 2048; // Buffer size for reading the output in chunks
-
-VAR
-  AProcess:   TProcess;
-  OutputStream: TStream;
-  BytesRead, leng: LONGINT;
-  Buffer:     ARRAY[1..BUF_SIZE] OF BYTE;
-  executable: STRING;
-
 BEGIN
-  leng := length(filename);
-  executable := LeftStr(filename, leng - 3) + 'exe';
-  IF filename <> '' THEN
-  BEGIN
-    IF FileExists(executable) THEN
-      DeleteFile(executable);
-
-    synedit1.Lines.SaveToFile(filename);
-    filechanged := synedit1.ChangeStamp;
-    ;
-    AProcess := TProcess.Create(nil);
-    memo1.Clear;
-    AProcess.Executable := 'fpc';
-    AProcess.Parameters.Add(Config_rec.optimization);  //optimization level
-    //AProcess.Parameters.Add('-va');
-    AProcess.Parameters.Add(filename);
-    AProcess.Options := [poUsePipes, poNoConsole];
-    AProcess.Execute;
-    OutputStream := TMemoryStream.Create;
-
-    REPEAT
-      BytesRead := AProcess.Output.Read(Buffer, BUF_SIZE);
-      OutputStream.Write(Buffer, BytesRead)
-    UNTIL BytesRead = 0;
-    AProcess.Free;
-    OutputStream.Position := 0;
-    memo1.Lines.LoadFromStream(outputstream);
-    OutputStream.Free;
-  END
-  ELSE
-    ShowMessage('File has no name, please use "save as first"');
-
+  compile_build(1);
 END;
 
 
@@ -386,36 +464,6 @@ BEGIN
   update_config_file;
 END;
 
-PROCEDURE TForm1.Run_buttonClick(Sender: TObject);
-VAR
-  Process:    TProcess;
-  I, leng:    INTEGER;
-  executable: STRING;
-BEGIN
-  leng := length(filename);
-  executable := LeftStr(filename, leng - 3) + 'exe';
-  IF FileExists(executable) THEN
-  BEGIN
-    Process := TProcess.Create(nil);
-    TRY
-      Process.InheritHandles := False;
-      Process.Options := [];
-      Process.ShowWindow := swoShow;
-
-      FOR I := 1 TO GetEnvironmentVariableCount DO
-        Process.Environment.Add(GetEnvironmentString(I));
-
-      Process.Executable := executable;
-      Process.Execute;
-    FINALLY
-      Process.Free;
-    END;
-  END
-  ELSE
-    ShowMessage('Executable doesn''t exist. Must compile succesfully first');
-
-END;
-
 PROCEDURE TForm1.saveas_fileClick(Sender: TObject);
 BEGIN
   IF SaveDialog1.Execute THEN
@@ -442,12 +490,36 @@ BEGIN
   update_config_file;
 END;
 
+procedure TForm1.SearchClick(Sender: TObject);
+begin
+    IF findDialog1.Execute THEN
+    begin
+    memo1.Append(inttostr(finddialog1.Position.x));
+    memo1.Append(inttostr(finddialog1.Position.y));
+
+    end;
+end;
+
 
 PROCEDURE TForm1.Select_fontClick(Sender: TObject);
 BEGIN
   fontDialog1.font := synedit2.font;
   IF fontDialog1.Execute THEN
     synedit2.font := fontDialog1.font;
+END;
+
+
+
+PROCEDURE TForm1.ToolButton12Click(Sender: TObject);
+BEGIN
+  IF filename <> '' THEN
+  BEGIN
+    synedit1.Lines.SaveToFile(filename);
+    filechanged := synedit1.ChangeStamp;
+  END
+  ELSE
+    ShowMessage('File has no name, please use "save as"');
+  update_config_file;
 END;
 
 
